@@ -3,12 +3,12 @@ import react from '@vitejs/plugin-react';
 import path from 'path';
 import {defineConfig, loadEnv} from 'vite';
 
-// https://vitejs.dev/config/
 export default defineConfig(({mode}) => {
   const env = loadEnv(mode, '.', '');
   return {
-    // GitHub Pages ke liye base path '/vamp/' hona zaroori hai
-    base: '/vamp/', 
+    // GitHub repository ka sahi naam yahan hona chahiye
+    // Screenshot ke hisaab se repository 'Real-Infinity' hai
+    base: '/Real-Infinity/', 
     plugins: [react(), tailwindcss()],
     resolve: {
       alias: {
@@ -16,7 +16,6 @@ export default defineConfig(({mode}) => {
       },
     },
     server: {
-      // HMR settings ko AI Studio compatibility ke liye chheda nahi gaya hai
       hmr: process.env.DISABLE_HMR !== 'true',
     },
   };
