@@ -2,19 +2,13 @@ import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react';
 import path from 'path';
 import {defineConfig, loadEnv} from 'vite';
-// vite.config.ts mein ye update karein
-export default defineConfig(({mode}) => {
-  return {
-    base: '/vamp/', // Aapke repo ka naam yahan hona chahiye
-    plugins: [react(), tailwindcss()],
-    // ... baaki code same rahega
-  };
-});
 
+// https://vitejs.dev/config/
 export default defineConfig(({mode}) => {
   const env = loadEnv(mode, '.', '');
   return {
-    base: './',
+    // GitHub Pages ke liye base path '/vamp/' hona zaroori hai
+    base: '/vamp/', 
     plugins: [react(), tailwindcss()],
     resolve: {
       alias: {
@@ -22,8 +16,7 @@ export default defineConfig(({mode}) => {
       },
     },
     server: {
-      // HMR is disabled in AI Studio via DISABLE_HMR env var.
-      // Do not modifyâfile watching is disabled to prevent flickering during agent edits.
+      // HMR settings ko AI Studio compatibility ke liye chheda nahi gaya hai
       hmr: process.env.DISABLE_HMR !== 'true',
     },
   };
