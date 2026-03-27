@@ -3,7 +3,7 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches:
-      - main  # Agar aapki branch ka naam 'master' hai toh yahan change karein
+      - main
 
 permissions:
   contents: read
@@ -13,6 +13,11 @@ permissions:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+    # Yeh line ensure karegi ki saare commands vamp-main folder mein chalein
+    defaults:
+      run:
+        working-directory: vamp-main 
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -22,14 +27,14 @@ jobs:
         with:
           node-version: 20
           cache: 'npm'
+          # Lock file ka sahi path batana zaroori hai
+          cache-dependency-path: vamp-main/package-lock.json 
 
       - name: Install dependencies
         run: npm install
 
       - name: Build
         run: npm run build
-        # Agar aap Gemini API use kar rahe hain toh build ke time 
-        # API key pass karni hogi (See Security Note below)
         env:
           VITE_GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
 
@@ -39,7 +44,8 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: './dist'
+          # Build folder ka path root se relative dena hota hai
+          path: 'vamp-main/dist' 
 
       - name: Deploy to GitHub Pages
         id: deployment
